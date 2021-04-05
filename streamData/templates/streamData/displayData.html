@@ -6,7 +6,7 @@
 <h1>Data:</h1>
 <ul>
     {% for d in data%}
-        <li>{{d}}</li>
+        <li>Ticket Number:{{d.ticket_no}} FlightId:{{d.flight_id}} FareConditions:{{d.fare_conditions}} Amount:{{d.amount}}</li>
     {% endfor %}
 </ul>
 {% endblock %}

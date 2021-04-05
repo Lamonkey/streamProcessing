@@ -9,10 +9,9 @@ Add Data
 
 {% block body %}
    <h1> add Task:</h1>
-   <form action="{% url 'streamData:addData' %}" method = "POST">
+    <form action="{% url 'streamData:addData' %}" method = "POST">
     {% csrf_token %}
     {{ form }}
     <input type="submit">
-   </form>
-
+   </form> 
 {% endblock %}
