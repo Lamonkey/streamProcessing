@@ -9,7 +9,7 @@ class NewDataForm(forms.Form):
     data = forms.CharField(label="New Data")
 
 def index(request):
-    return HttpResponse("Hello, world!")
+    return render(request,'streamData/index.html')
 
 def streamData(request,rate):
     return render(request,'streamData/template.html',{
