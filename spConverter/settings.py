@@ -26,7 +26,7 @@ SECRET_KEY = 'j=v83-$s4&ta94n*6rb1x_z+6akh79ur5)@c-yp+u!lf&lgoky'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['streamprocessing.herokuapp.com','127.0.0.1']
 
 
 # Application definition
