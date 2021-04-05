@@ -1,1 +1,1 @@
-web: gunicorn streamprocessing.wsgi
+web: gunicorn manage:app
