@@ -1,1 +1,1 @@
-web: gunicorn run:manage
+web: gunicorn spConverter.wsgi
