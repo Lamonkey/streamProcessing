@@ -1,1 +1,1 @@
-web: unicorn my project.wsgi
+web: gunicorn my project.wsgi
