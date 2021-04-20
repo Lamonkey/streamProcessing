@@ -1,5 +1,6 @@
 ## Install Spark 2.4.7
-Python version for pyspark: 3.7
+Python version for pyspark: 3.7  
+(Roughly follow: https://maelfabien.github.io/bigdata/SparkInstall/#)
 
 1. Install Java
 2. Install Scala
