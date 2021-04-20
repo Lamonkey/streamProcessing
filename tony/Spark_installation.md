@@ -34,7 +34,7 @@ export PYSPARK_PYTHON=/Users/hsinhanh19/anaconda3/bin/python
   SPARK_LOCAL_IP=localhost
   ```
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```  
-  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://local:7077```   
+  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```   
   To Stop,  
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-slave.sh```  
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-master.sh``` 
