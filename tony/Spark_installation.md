@@ -18,7 +18,6 @@ export PYSPARK_PYTHON=/Users/hsinhanh19/anaconda3/bin/python
   2-workers-on-1-node Standalone Cluster (one executor per worker)  
   (https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/sbin/```  
-  
   Set configuration first,  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/conf/```  
   Create spark_env.sh  
