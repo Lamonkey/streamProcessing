@@ -1,6 +1,8 @@
 ## Install Spark 2.4.7
 Python version for pyspark: 3.7  
-(Roughly follow: https://maelfabien.github.io/bigdata/SparkInstall/#)
+(Roughly follow: https://maelfabien.github.io/bigdata/SparkInstall/#)  
+Spark: 2.4.7  
+Java: 1.8  
 
 1. Install Java
 2. Install Scala
@@ -42,4 +44,6 @@ export PYSPARK_PYTHON=/Users/hsinhanh19/anaconda3/bin/python
 
 
 ## Problem Solved:
-1. Set master ip: https://stackoverflow.com/questions/31166851/spark-standalone-cluster-slave-not-connecting-to-master
+1. Set master ip: https://stackoverflow.com/questions/31166851/spark-standalone-cluster-slave-not-connecting-to-master  
+2. Spark Standalone mode: https://spark.apache.org/docs/2.4.7/spark-standalone.html  
+3. Spark Streaming Guide: https://spark.apache.org/docs/2.4.7/streaming-programming-guide.html  
