@@ -4,8 +4,9 @@
 ```bin/zookeeper-server-start.sh config/zookeeper.properties```  
 ```bin/kafka-server-start.sh config/server.properties```
 
-3. Run ```python ticket_producer.py```, which includes sending records to a new topic
-4. Run ```python ticket_consumer.py``` to retrieve data
+3. ```pip install kafka-python```
+4. Run ```python ticket_producer.py```, which includes sending records to a new topic
+5. Run ```python ticket_consumer.py``` to retrieve data
 
 
 Other useful commands:
