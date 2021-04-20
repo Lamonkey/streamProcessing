@@ -27,12 +27,13 @@ export PYSPARK_PYTHON=/Users/hsinhanh19/anaconda3/bin/python
   SPARK_WORKER_CORES=2
   SPARK_WORKER_INSTANCES=2
   SPARK_WORKER_MEMORY=2g
-  SPARK_MASTER_HOST=172.30.32.190
-  SPARK_LOCAL_IP=172.30.32.190
+  SPARK_MASTER_HOST=localhost
+  SPARK_LOCAL_IP=localhost
   ```
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```  
-  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://your_ip:7077```  
-  
-  
+  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://local:7077```   
+  To Stop,  
+  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-slave.sh```  
+  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-master.sh``` 
   
 8. ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```
