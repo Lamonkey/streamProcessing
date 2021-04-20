@@ -1,10 +1,9 @@
 ## Kafka
 1. Install Kafka(https://kafka.apache.org/quickstart)
-2. In Kafka folder, start zookeeper and kafka server
-```bash
-bin/zookeeper-server-start.sh config/zookeeper.properties
-bin/kafka-server-start.sh config/server.properties
-```
+2. In Kafka folder, start zookeeper and kafka server  
+```bin/zookeeper-server-start.sh config/zookeeper.properties```  
+```bin/kafka-server-start.sh config/server.properties```
+
 3. Run ```python ticket_producer.py```, which includes sending records to a new topic
 4. Run ```python ticket_consumer.py``` to retrieve data
 
