@@ -39,3 +39,7 @@ export PYSPARK_PYTHON=/Users/hsinhanh19/anaconda3/bin/python
   
 8. ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```  
   (spark-streaming-kafka package: https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
+
+
+## Problem Solved:
+1. Set master ip: https://stackoverflow.com/questions/31166851/spark-standalone-cluster-slave-not-connecting-to-master
