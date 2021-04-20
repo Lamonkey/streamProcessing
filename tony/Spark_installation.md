@@ -1,4 +1,6 @@
 ## Install Spark 2.4.7
+Python version for pyspark: 3.7
+
 1. Install Java
 2. Install Scala
 3. Download https://www.apache.org/dyn/closer.lua/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz  
@@ -28,5 +30,9 @@ export PYSPARK_PYTHON=/Users/hsinhanh19/anaconda3/bin/python
   SPARK_MASTER_HOST=172.30.32.190
   SPARK_LOCAL_IP=172.30.32.190
   ```
+  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```  
+  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://your_ip:7077```  
+  
+  
   
 8. ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```
