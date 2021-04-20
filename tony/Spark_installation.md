@@ -13,8 +13,20 @@ export SPARK_HOME=/usr/local/Cellar/apache-spark/2.4.7
 export PATH=/usr/local/Cellar/apache-spark/2.4.7/bin:$PATH
 export PYSPARK_PYTHON=/Users/hsinhanh19/anaconda3/bin/python
 ```
+
 7. Start Spark master and workers  
   2-workers-on-1-node Standalone Cluster (one executor per worker)  
-  (https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)
+  (https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)  
+  ```cd /usr/local/Cellar/apache-spark/2.4.7/sbin/```  
+  ```cd /usr/local/Cellar/apache-spark/2.4.7/conf/```  
+  Set configuration first,  
+  Create spark_env.sh  
+  ```bash
+  SPARK_WORKER_CORES=2
+  SPARK_WORKER_INSTANCES=2
+  SPARK_WORKER_MEMORY=2g
+  SPARK_MASTER_HOST=172.30.32.190
+  SPARK_LOCAL_IP=172.30.32.190
+  ```
   
-8. 
+8. ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```
