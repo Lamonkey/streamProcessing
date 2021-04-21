@@ -93,11 +93,22 @@ export PYSPARK_PYTHON=/Users/yourMac/anaconda3/bin/python
 ```
 
 7. Set configuration for Spark master and workers  
-  Configuration: 2 workers on 1 node  
-  (Reference: https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)  
-  ```cd /usr/local/Cellar/apache-spark/2.4.7/sbin/```  
-  Set configuration first,  
+   (From https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)  
+  Configuration:  2 workers on 1 node  
+  
+  Set configuration,  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/conf/```  
+  Create `spark_env.sh`  
+  ```bash  
+  SPARK_WORKER_CORES=2
+  SPARK_WORKER_INSTANCES=2
+  SPARK_WORKER_MEMORY=2g
+  SPARK_MASTER_HOST=localhost
+  SPARK_LOCAL_IP=localhost
+  ```
+  
+  ```cd /usr/local/Cellar/apache-spark/2.4.7/sbin/```  
+  
   Create spark_env.sh  
   ```bash  
   SPARK_WORKER_CORES=2
