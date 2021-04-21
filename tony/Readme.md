@@ -83,7 +83,7 @@ Java: 1.8
    Relocate folder: ```mv 2.4.7 /usr/local/apache-spark/```
 5. ```pip install pyspark==2.4.7```
 6. Set PATH  
-(Path depends on where your files stored)
+(Path depends on where your files stored)  
 ```bash
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 export JRE_HOME=/Library/java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/
