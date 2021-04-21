@@ -69,9 +69,9 @@ Cluster overview
 
 # Spark
 ### Version
-Python: 3.7  
-Spark: 2.4.7  
-Java: 1.8  
+- Python: 3.7  
+- Spark: 2.4.7  
+- Java: 1.8  
 (Reference: https://maelfabien.github.io/bigdata/SparkInstall/#)
 
 ### Step1: Installation
