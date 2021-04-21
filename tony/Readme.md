@@ -68,11 +68,13 @@ Cluster overview
 
 
 # Spark
+### Version
 Python: 3.7  
 Spark: 2.4.7  
 Java: 1.8  
 (Reference: https://maelfabien.github.io/bigdata/SparkInstall/#)
 
+### Steps
 1. Install Java
 2. Install Scala
 3. Download https://www.apache.org/dyn/closer.lua/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz  
