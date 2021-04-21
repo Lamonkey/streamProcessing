@@ -1,7 +1,8 @@
 # Spark Streaming + Kafka Integration
 Kafka producer reads in .csv file and pushes data onto a topic. Spark streaming then works as a consumer to receive the streaming data and processes them.
 
-[Install Kafka](#kafka)
+- [Install Kafka](#kafka)
+- [Install Spark 2.4.7](#install-spark-2.4.7)
 
 ## Environment
 - Python version: 3.7 (pyspark only support python3.7)
