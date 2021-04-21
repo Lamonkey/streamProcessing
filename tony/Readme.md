@@ -20,10 +20,8 @@ In `kafka_2.13-2.7.0` folder,
 ### Step2: Start up Spark Master and Workers
 (Configuration: 2 workers on 1 node, 1 executor per worker)
 
-```bash
-/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh 
-/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077
-```
+```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```
+```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```
 
 Cluster overview
 
@@ -57,15 +55,15 @@ Cluster overview
 5. Run ```python ticket_consumer.py``` to retrieve data
 
 
-Other useful commands:
-* Create new topic
 
+### Other useful commands:
+* Create new topic  
 ```bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic topic_name```
-* List all existed topics
 
+* List all existed topics  
 ```bin/kafka-topics.sh --list --zookeeper localhost:2181```
-* Delete topic
 
+* Delete topic  
 ```bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic remove-me```
 
 
