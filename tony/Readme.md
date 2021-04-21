@@ -22,6 +22,27 @@ In `kafka_2.13-2.7.0` folder,
 /usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077
 ```
 
+Cluster overview
+
+| Application     | URL                                      | Description                                                |
+| --------------- | ---------------------------------------- | ---------------------------------------------------------- |
+| Spark Driver    | [localhost:4040](http://localhost:4040/) | Spark Driver web ui                                        |
+| Spark Master    | [localhost:8080](http://localhost:8080/) | Spark Master node                                          |
+| Spark Worker I  | [localhost:8081](http://localhost:8081/) | Spark Worker node with 2 core and 2g of memory (default) |
+| Spark Worker II | [localhost:8082](http://localhost:8082/) | Spark Worker node with 2 core and 2g of memory (default) |
+
+### Step3: Start your program
+(Use spark-streaming-kafka package, from https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
+
+```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```
+
+### To shut down workers and servers
+```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-slave.sh```  
+```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-master.sh```
+
+```Crtl+C``` on Kafka server terminal, then Zookeeper server.
+
+
 ## Kafka
 1. Install Kafka(https://kafka.apache.org/quickstart)
 2. In Kafka folder, start zookeeper and kafka server  
