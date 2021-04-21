@@ -10,7 +10,7 @@ Kafka producer reads in .csv file and pushes data onto a topic. Spark streaming 
 - Spark: 2.4.7
 - Java: 1.8
 
-## Start Environment
+## Run your program
 ### Step1: Start up Zookeeper and Kafka in two terminals
 In `kafka_2.13-2.7.0` folder,
 
