@@ -92,9 +92,9 @@ export PATH=/usr/local/Cellar/apache-spark/2.4.7/bin:$PATH
 export PYSPARK_PYTHON=/Users/yourMac/anaconda3/bin/python
 ```
 
-7. Start Spark master and workers  
-  2-workers-on-1-node Standalone Cluster (one executor per worker)  
-  (https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)  
+7. Set configuration for Spark master and workers  
+  Configuration: 2 workers on 1 node  
+  (Reference: https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/sbin/```  
   Set configuration first,  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/conf/```  
