@@ -3,6 +3,7 @@ Kafka producer reads in .csv file and pushes data onto a topic. Spark streaming 
 
 - [Install Kafka](#kafka)
 - [Install Spark 2.4.7](#spark)
+- [Problem Solved](#problem-solved)
 
 ## Environment
 - Python version: 3.7 (pyspark only support python3.7)
@@ -72,6 +73,7 @@ Cluster overview
 - Python: 3.7  
 - Spark: 2.4.7  
 - Java: 1.8  
+
 (Reference: https://maelfabien.github.io/bigdata/SparkInstall/#)
 
 ### Step1: Installation
@@ -120,7 +122,7 @@ SPARK_LOCAL_IP=localhost
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```   
    
 ### Step4: Start your program
-(Need spark-streaming-kafka package: https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
+(Apply spark-streaming-kafka package: https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
 
 ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```  
 
