@@ -105,7 +105,7 @@ Configuration:
 Go to config and create new configuration file,  
 ```cd /usr/local/Cellar/apache-spark/2.4.7/conf/```  
   
-Create `spark_env.sh`, 
+Create `spark_env.sh` and save it, 
 ```bash  
 SPARK_WORKER_CORES=2
 SPARK_WORKER_INSTANCES=2
@@ -114,16 +114,18 @@ SPARK_MASTER_HOST=localhost
 SPARK_LOCAL_IP=localhost
 ```
 
-8. Start Spark master and workers  
+### Step3: Start Spark master and workers  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/sbin/```  
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```  
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```   
    
-9. ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```  
-  (spark-streaming-kafka package: https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
+### Step4: Start your program
+(Need spark-streaming-kafka package: https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
+
+```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```  
 
 
-## Problem Solved:
+# Problem Solved:
 1. Set master ip: https://stackoverflow.com/questions/31166851/spark-standalone-cluster-slave-not-connecting-to-master  
 2. Spark Standalone mode: https://spark.apache.org/docs/2.4.7/spark-standalone.html  
 3. Spark Streaming Guide: https://spark.apache.org/docs/2.4.7/streaming-programming-guide.html  
