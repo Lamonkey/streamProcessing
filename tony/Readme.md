@@ -1,3 +1,25 @@
+# Spark Streaming + Kafka Integration
+Kafka producer reads in .csv file and pushes data onto a topic. Spark streaming then works as a consumer to receive the streaming data and processes them.
+
+## Environment
+- Python version: 3.7 (pyspark only support python3.7)
+- Spark: 2.4.7
+- Java: 1.8
+
+## Start Environment
+### Step1: Start up Zookeeper and Kafka in two terminals
+In `kafka_2.13-2.7.0` folder,
+
+``bin/zookeeper-server-start.sh config/zookeeper.properties``
+
+``bin/kafka-server-start.sh config/server.properties``
+
+### Step2: Start up Spark Master and Workers
+(Configuration: 2 workers on 1 node, 1 executor per worker)
+
+```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh 
+/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```
+
 ## Kafka
 1. Install Kafka(https://kafka.apache.org/quickstart)
 2. In Kafka folder, start zookeeper and kafka server  
