@@ -2,7 +2,7 @@
 Kafka producer reads in .csv file and pushes data onto a topic. Spark streaming then works as a consumer to receive the streaming data and processes them.
 
 - [Install Kafka](#kafka)
-- [Install Spark 2.4.7](#install-spark-2.4.7)
+- [Install Spark 2.4.7](#spark)
 
 ## Environment
 - Python version: 3.7 (pyspark only support python3.7)
@@ -46,7 +46,7 @@ Cluster overview
 ```Crtl+C``` on Kafka server terminal, then Zookeeper server.
 
 
-## Kafka
+# Kafka
 1. Install Kafka(https://kafka.apache.org/quickstart)
 2. In Kafka folder, start zookeeper and kafka server  
 ```bin/zookeeper-server-start.sh config/zookeeper.properties```  
@@ -69,7 +69,7 @@ Other useful commands:
 ```bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic remove-me```
 
 
-## Install Spark 2.4.7
+# Spark
 Python version for pyspark: 3.7  
 (Roughly follow: https://maelfabien.github.io/bigdata/SparkInstall/#)  
 Spark: 2.4.7  
