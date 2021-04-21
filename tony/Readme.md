@@ -68,10 +68,10 @@ Cluster overview
 
 
 # Spark
-Python version for pyspark: 3.7  
-(Roughly follow: https://maelfabien.github.io/bigdata/SparkInstall/#)  
+Python: 3.7  
 Spark: 2.4.7  
 Java: 1.8  
+(Reference: https://maelfabien.github.io/bigdata/SparkInstall/#)
 
 1. Install Java
 2. Install Scala
