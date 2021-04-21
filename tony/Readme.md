@@ -74,37 +74,46 @@ Spark: 2.4.7
 Java: 1.8  
 (Reference: https://maelfabien.github.io/bigdata/SparkInstall/#)
 
-### Steps
-1. Install Java
-2. Install Scala
-3. Download https://www.apache.org/dyn/closer.lua/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz  
-   Unzip: ```tar xvf spark-2.4.7-bin-hadoop2.7.tgz```
-4. Rename folder "spark-2.4.7-bin-hadoop2.7" to "2.4.7"  
+### Step1: Installation
+- Install Java
+- Install Scala
+- Install Spark 2.4.7  
+   Download https://www.apache.org/dyn/closer.lua/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz  
+   Unzip: ```tar xvf spark-2.4.7-bin-hadoop2.7.tgz```  
+   Rename folder "spark-2.4.7-bin-hadoop2.7" to "2.4.7"  
    Relocate folder: ```mv 2.4.7 /usr/local/apache-spark/```
-5. ```pip install pyspark==2.4.7```
-6. Set PATH  
-(Path depends on where your files stored)  
-```bash
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
-export JRE_HOME=/Library/java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/
-export SPARK_HOME=/usr/local/Cellar/apache-spark/2.4.7
-export PATH=/usr/local/Cellar/apache-spark/2.4.7/bin:$PATH
-export PYSPARK_PYTHON=/Users/yourMac/anaconda3/bin/python
+- Install pyspark  
+   ```pip install pyspark==2.4.7```
+- Set PATH  
+   (Path depends on where your files stored)  
+   ```bash
+   export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+   export JRE_HOME=/Library/java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre/
+   export SPARK_HOME=/usr/local/Cellar/apache-spark/2.4.7
+   export PATH=/usr/local/Cellar/apache-spark/2.4.7/bin:$PATH
+   export PYSPARK_PYTHON=/Users/yourMac/anaconda3/bin/python
+   ```
+
+### Step2: Set Configuration for Spark master and workers
+(Reference from: https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)
+
+Configuration:  
+- 2 workers on 1 node  
+- Each worker with 2 cores
+- Each worker with 2g memory
+  
+Go to config and create new configuration file,  
+```cd /usr/local/Cellar/apache-spark/2.4.7/conf/```  
+  
+Create `spark_env.sh`, 
+```bash  
+SPARK_WORKER_CORES=2
+SPARK_WORKER_INSTANCES=2
+SPARK_WORKER_MEMORY=2g
+SPARK_MASTER_HOST=localhost
+SPARK_LOCAL_IP=localhost
 ```
 
-7. Set configuration for Spark master and workers  
-   (From https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)  
-  Configuration:  2 workers on 1 node  
-  Set configuration,  
-  ```cd /usr/local/Cellar/apache-spark/2.4.7/conf/```  
-  Create `spark_env.sh`  
-  ```bash  
-  SPARK_WORKER_CORES=2
-  SPARK_WORKER_INSTANCES=2
-  SPARK_WORKER_MEMORY=2g
-  SPARK_MASTER_HOST=localhost
-  SPARK_LOCAL_IP=localhost
-  ```
 8. Start Spark master and workers  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/sbin/```  
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```  
