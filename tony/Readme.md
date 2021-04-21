@@ -95,7 +95,6 @@ export PYSPARK_PYTHON=/Users/yourMac/anaconda3/bin/python
 7. Set configuration for Spark master and workers  
    (From https://mallikarjuna_g.gitbooks.io/spark/content/spark-standalone-example-2-workers-on-1-node-cluster.html)  
   Configuration:  2 workers on 1 node  
-  
   Set configuration,  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/conf/```  
   Create `spark_env.sh`  
@@ -106,24 +105,12 @@ export PYSPARK_PYTHON=/Users/yourMac/anaconda3/bin/python
   SPARK_MASTER_HOST=localhost
   SPARK_LOCAL_IP=localhost
   ```
-  
+8. Start Spark master and workers  
   ```cd /usr/local/Cellar/apache-spark/2.4.7/sbin/```  
-  
-  Create spark_env.sh  
-  ```bash  
-  SPARK_WORKER_CORES=2
-  SPARK_WORKER_INSTANCES=2
-  SPARK_WORKER_MEMORY=2g
-  SPARK_MASTER_HOST=localhost
-  SPARK_LOCAL_IP=localhost
-  ```
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```  
   ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```   
-  To Stop,  
-  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-slave.sh```  
-  ```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-master.sh``` 
-  
-8. ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```  
+   
+9. ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```  
   (spark-streaming-kafka package: https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
 
 
