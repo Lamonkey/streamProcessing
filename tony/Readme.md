@@ -17,8 +17,10 @@ In `kafka_2.13-2.7.0` folder,
 ### Step2: Start up Spark Master and Workers
 (Configuration: 2 workers on 1 node, 1 executor per worker)
 
-```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh 
-/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```
+```bash
+/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh 
+/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077
+```
 
 ## Kafka
 1. Install Kafka(https://kafka.apache.org/quickstart)
