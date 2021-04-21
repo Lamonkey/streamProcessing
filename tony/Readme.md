@@ -80,10 +80,10 @@ Cluster overview
 - Install Java
 - Install Scala
 - Install Spark 2.4.7  
-   Download https://www.apache.org/dyn/closer.lua/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz  
-   Unzip: ```tar xvf spark-2.4.7-bin-hadoop2.7.tgz```  
-   Rename folder "spark-2.4.7-bin-hadoop2.7" to "2.4.7"  
-   Relocate folder: ```mv 2.4.7 /usr/local/apache-spark/```
+   1. Download https://www.apache.org/dyn/closer.lua/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz  
+   2. Unzip: ```tar xvf spark-2.4.7-bin-hadoop2.7.tgz```  
+   3. Rename folder "spark-2.4.7-bin-hadoop2.7" to "2.4.7"  
+   4. Relocate folder: ```mv 2.4.7 /usr/local/apache-spark/```
 - Install pyspark  
    ```pip install pyspark==2.4.7```
 - Set PATH  
