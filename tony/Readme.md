@@ -18,7 +18,10 @@ In `kafka_2.13-2.7.0` folder,
 
 ``bin/kafka-server-start.sh config/server.properties``
 
-### Step2: Start up Spark Master and Workers
+### Step2: Push data onto a topic through producer
+Run ```python ticket_producer.py```, which includes sending records to a new topic
+
+### Step3: Start up Spark Master and Workers
 (Configuration: 2 workers on 1 node, 1 executor per worker)
 
 ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```
@@ -33,7 +36,7 @@ Cluster overview
 | Spark Worker I  | [localhost:8081](http://localhost:8081/) | Spark Worker node with 2 core and 2g of memory (default) |
 | Spark Worker II | [localhost:8082](http://localhost:8082/) | Spark Worker node with 2 core and 2g of memory (default) |
 
-### Step3: Start your program
+### Step4: Start your program
 (Use spark-streaming-kafka package, from https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
 
 ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```
