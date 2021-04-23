@@ -14,6 +14,8 @@ Kafka producer reads in .csv file and pushes data onto a topic. Spark streaming 
 
 ### Preparation
 
+Please check the ``spark-up.sh`` and ``spark-stop.sh`` scripts to make sure the path are correct for your project
+
 Only run the following command when you are the first time to run the ``spark-up.sh`` and ``spark-stop.sh`` shell script.
 
 ``chmod +x ./spark-up.sh``
