@@ -24,7 +24,7 @@ Run ```python ticket_producer.py```, which includes sending records to a new top
 ### Step3: Start up Spark Master and Workers
 (Configuration: 2 workers on 1 node, 1 executor per worker)
 
-```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```
+```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```  
 ```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```
 
 Cluster overview
