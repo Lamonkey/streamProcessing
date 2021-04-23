@@ -11,21 +11,21 @@ Kafka producer reads in .csv file and pushes data onto a topic. Spark streaming 
 - Java: 1.8
 
 ## Run your program
-### Step1: Start up Zookeeper and Kafka in two terminals
-In `kafka_2.13-2.7.0` folder,
 
-``bin/zookeeper-server-start.sh config/zookeeper.properties``
+### Preparation
 
-``bin/kafka-server-start.sh config/server.properties``
+Only run the following command when you are the first time to run the ``spark-up.sh`` and ``spark-stop.sh`` shell script.
+
+``chmod +x ./spark-up.sh``
+``chmod +x ./spark-stop.sh``
+
+### Step1: Start up Zookeeper and Kafka, start up spark master and workers
+
+run ``spark-up.sh``
 
 ### Step2: Push data onto a topic through producer
 Run ```python ticket_producer.py```, which includes sending records to a new topic
 
-### Step3: Start up Spark Master and Workers
-(Configuration: 2 workers on 1 node, 1 executor per worker)
-
-```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-master.sh```  
-```/usr/local/Cellar/apache-spark/2.4.7/sbin/start-slave.sh spark://localhost:7077```
 
 Cluster overview
 
@@ -36,14 +36,14 @@ Cluster overview
 | Spark Worker I  | [localhost:8081](http://localhost:8081/) | Spark Worker node with 2 core and 2g of memory (default) |
 | Spark Worker II | [localhost:8082](http://localhost:8082/) | Spark Worker node with 2 core and 2g of memory (default) |
 
-### Step4: Start your program
+### Step3: Start your program
 (Use spark-streaming-kafka package, from https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8)
 
 ```spark-submit --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.4.7 dstream.py```
 
 ### To shut down workers and servers
-```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-slave.sh```  
-```/usr/local/Cellar/apache-spark/2.4.7/sbin/stop-master.sh```
+
+run ``spark-stop.sh``
 
 ```Crtl+C``` on Kafka server terminal, then Zookeeper server.
 
