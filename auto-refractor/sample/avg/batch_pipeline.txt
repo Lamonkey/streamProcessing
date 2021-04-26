@@ -1,0 +1,8 @@
+def batch_pipeline(source):
+    target = (
+        source.map(lambda x: (x.split(",")[2], float(x.split(",")[3])))
+        .mapValues(lambda x: (x, 1))
+        .reduceByKey(lambda a, b: (a[0] + b[0], a[1] + b[1]))
+        .mapValues(lambda x: (x[0] / x[1], x[1]))
+    )
+    return target

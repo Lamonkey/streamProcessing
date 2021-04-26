@@ -1,15 +1,6 @@
-def updateFunc(new_values, running_tuple):
-    new_sum = [field[0] * field[1] for field in new_values]
-    new_count = [field[1] for field in new_values]
-
-    if not running_tuple:
-        running_avg = 0
-        running_count = 0
-    else:
-        running_avg, running_count = running_tuple
-
-    running_sum = running_avg * running_count
-    update_sum = sum(new_sum, running_sum)
-    update_count = sum(new_count, running_count)
-    update_avg = update_sum / update_count
-    return update_avg, update_count
+def updateFunc(new_values, running_value):
+    update_value = 0
+    if not running_value:
+        running_value = 0
+    update_value = sum([x for x in new_values]) + running_value
+    return update_value

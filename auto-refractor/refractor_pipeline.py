@@ -12,38 +12,82 @@ class PipelineRefractor:
         """
         self.input_fn = input_fn
         self.template_fn = template_fn
-        self.res_file = open(output_fn, "w")
+        self.output_fn = output_fn
+        self.buffer = []
+        self.num_out = 0
 
-    def insert_template(self):
-        for temp_line in open(self.template_fn).readlines():
-            if len(temp_line) != 1:
-                res = "    " + temp_line
+    def format_updateStateByKey(self,):
+        processed_lines = []
+        lines = open(self.template_fn, 'r').readlines()
+
+        for i, line in enumerate(lines):
+            # aggregate
+            if self.num_out == 1:
+                processed_lines.append(" " * 4 +line)
+
+            elif "update_value" in line and "sum" in line and "running_value" in line:
+                for j in range(self.num_out):
+                    update_line = (
+                        line.replace("update_value", "update_value[{}]".format(j))
+                        .replace("[x", "[x[{}]".format(j))
+                        .replace("running_value", "running_value[{}]".format(j))
+                    )
+                    processed_lines.append(" " * 4 +update_line)
+            # init update_value
+            elif "0" in line and ("update_value" in line or "running_value" in line) :
+                init_value = "["
+                for j in range(self.num_out):
+                    if j != self.num_out - 1:
+                        init_value += "0, "
+                    else:
+                        init_value += "0]"
+                line = line.replace("0", init_value)
+                processed_lines.append(" " * 4 +line)
             else:
-                res = temp_line
-            self.res_file.write(res)
-        self.res_file.write("\n" * 2)
+                processed_lines.append(" " * 4 + line)
+
+        return processed_lines
+    def insert_updateStateByKey(self):
+        '''Inserting the template for updateStatesByKey'''
+        update_state_func = self.format_updateStateByKey()
+        self.buffer = self.buffer[:1] + update_state_func + self.buffer[1:]
+
+    def input_to_buffer(self, lines):
+        for line in lines:
+            if "batch_pipeline" in line:
+                line = line.replace("batch", "stream")
+            # identify the format of data pipeline
+            if "reduceByKey" in line:
+                out = line.split("(")[-1].strip(")")
+                self.num_out = len(out.split(","))
+            self.buffer.append(line)
+
+    def buffer_to_output(self,):
+        res_file = open(self.output_fn, "w")
+        for i, line in enumerate(self.buffer):
+            if "reduceByKey" in line:
+                if self.num_out != 1:
+                    res_file.write(line)
+                res_file.write("    " * 2 + ".updateStateByKey(updateFunc)\n")
+
+            else:
+                res_file.write(line)
+        res_file.close()
 
     def refractor(self):
         f = open(self.input_fn, "r")
         lines = f.readlines()
-
-        for i, line in enumerate(lines):
-            if line.startswith("def"):
-                self.res_file.write(line.replace("batch", "stream"))
-                self.insert_template()
-            elif i == len(lines) - 2:
-                self.res_file.write("    " * 2 + ".updateStateByKey(updateFunc)\n")
-                self.res_file.write(line)
-            else:
-                self.res_file.write(line)
-
         f.close()
-        self.res_file.close()
+
+        self.input_to_buffer(lines)
+        self.insert_updateStateByKey()
+        self.buffer_to_output()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='auto refractor batch pipeline to stream pipeline')
-    parser.add_argument('--f_in', type=str, default="./sample/batch_pipeline.txt", help='input filename')
+    parser.add_argument('--f_in', type=str, default="./sample/wordcount/batch_pipeline.txt", help='input filename')
+    parser.add_argument('--f_gt', type=str, default="./sample/wordcount/gt_stream_pipeline.txt", help='output filename')
     parser.add_argument('--f_out', type=str, default="./gen_stream_pipeline.py", help='output filename')
     args = parser.parse_args()
 
@@ -57,7 +101,7 @@ if __name__ == "__main__":
     )
     pipeline.refractor()
 
-    gt_lines = open("./sample/gt_stream_pipeline.txt").readlines()
+    gt_lines = open(args.f_gt).readlines()
     res_lines = open("./gen_stream_pipeline.py").readlines()
 
     length = 80
