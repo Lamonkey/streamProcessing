@@ -1,6 +1,6 @@
 import pdb as bp
-import time
-
+import argparse
+import os
 
 class PipelineRefractor:
     def __init__(self, input_fn, output_fn, template_fn):
@@ -42,14 +42,21 @@ class PipelineRefractor:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='auto refractor batch pipeline to stream pipeline')
+    parser.add_argument('--f_in', type=str, default="./sample/batch_pipeline.txt", help='input filename')
+    parser.add_argument('--f_out', type=str, default="./gen_stream_pipeline.py", help='output filename')
+    args = parser.parse_args()
+
+    # auto linting with "black" (black package is required, using pip install)
+    os.system("black {}".format(args.f_in))
+
     pipeline = PipelineRefractor(
-        input_fn="./sample/batch_pipeline.txt",
-        output_fn="./gen_stream_pipeline.py",
+        input_fn=args.f_in,
+        output_fn=args.f_out,
         template_fn="./sample/template.txt",
     )
     pipeline.refractor()
 
-    time.sleep(3)
     gt_lines = open("./sample/gt_stream_pipeline.txt").readlines()
     res_lines = open("./gen_stream_pipeline.py").readlines()
 
