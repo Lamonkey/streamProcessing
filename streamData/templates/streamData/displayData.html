@@ -1,0 +1,13 @@
+{% extends "streamData/layout.html" %}
+{% block title%}
+<title> Display Data</title>
+{% endblock %}
+{% block body %}
+<h1>Data:</h1>
+<ul>
+    {% for d in data%}
+        <li>{{d}}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
