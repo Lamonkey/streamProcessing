@@ -1,0 +1,6 @@
+def updateFunc(new_values, running_value):
+    update_value = 0
+    if not running_value:
+        running_value = 0
+    update_value = sum([x for x in new_values]) + running_value
+    return update_value

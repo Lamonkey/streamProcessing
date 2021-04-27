@@ -1,0 +1,15 @@
+def stream_pipeline(source):
+    def updateFunc(new_values, running_value):
+        update_value = 0
+        if not running_value:
+            running_value = 0
+        update_value = sum([x for x in new_values]) + running_value
+        return update_value
+    target = (
+        source.flatMap(lambda line: line.split(" "))
+        .map(lambda word: (word, 1))
+        .reduceByKey(lambda x, y: (x + y))
+        .updateStateByKey(updateFunc)
+    )
+    return target
+
