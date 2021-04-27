@@ -60,14 +60,18 @@ class PipelineRefractor:
             if "reduceByKey" in line:
                 out = line.split("(")[-1].strip(")")
                 self.num_out = len(out.split(","))
+            elif "sortBy" in line:
+                line = line.replace(".", ".transform(lambda rdd: rdd.").replace("\n", ")\n")
+                print(line)
+            elif "take" in line:
+                line = line.replace("take", "pprint")
             self.buffer.append(line)
 
     def buffer_to_output(self,):
         res_file = open(self.output_fn, "w")
         for i, line in enumerate(self.buffer):
             if "reduceByKey" in line:
-                if self.num_out != 1:
-                    res_file.write(line)
+                res_file.write(line)
                 res_file.write("    " * 2 + ".updateStateByKey(updateFunc)\n")
 
             else:
@@ -86,8 +90,8 @@ class PipelineRefractor:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='auto refractor batch pipeline to stream pipeline')
-    parser.add_argument('--f_in', type=str, default="./sample/wordcount/batch_pipeline.txt", help='input filename')
-    parser.add_argument('--f_gt', type=str, default="./sample/wordcount/gt_stream_pipeline.txt", help='output filename')
+    parser.add_argument('--f_in', type=str, default="./sample/wc/batch_pipeline.txt", help='input filename')
+    parser.add_argument('--f_gt', type=str, default="./sample/wc/gt_stream_pipeline.txt", help='output filename')
     parser.add_argument('--f_out', type=str, default="./gen_stream_pipeline.py", help='output filename')
     args = parser.parse_args()
 
