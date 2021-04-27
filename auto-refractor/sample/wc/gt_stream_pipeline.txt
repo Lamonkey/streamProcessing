@@ -8,6 +8,7 @@ def stream_pipeline(source):
     target = (
         source.flatMap(lambda line: line.split(" "))
         .map(lambda word: (word, 1))
+        .reduceByKey(lambda x, y: (x + y))
         .updateStateByKey(updateFunc)
     )
     return target
