@@ -6,7 +6,7 @@
 <h1>Data:</h1>
 <ul>
     {% for d in data%}
-        <li>{{d}}</li>
+        <li>{{d.ticket_no}}{{d.flight_id}}{{d.fare_condition}}{{d.amount}}</li>
     {% endfor %}
 </ul>
 {% endblock %}

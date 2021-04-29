@@ -1,2 +1,4 @@
 kafka_streaming/checkpoints/*
 .vscode/
+.env
+

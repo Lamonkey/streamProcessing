@@ -6,4 +6,5 @@ urlpatterns = [
     path("streamData/<int:rate>",views.streamData,name="streamData"),
     path("displayData/",views.displayData,name="displayData"),
     path("addData/",views.addData,name="addData"),
+    path("convert/",views.convert,name="convert"),
 ]
