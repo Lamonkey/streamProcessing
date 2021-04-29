@@ -9,8 +9,8 @@ from django import forms
 from django.urls import reverse
 from django.forms import ModelForm
 from streamData.models import Flight_Ticket
+from .refractor_pipeline import PipelineRefractor
 
-#form to handle upload txt or py file
 class UploadFileForm(forms.Form):
     #title = forms.CharField(max_length=50)
     file = forms.FileField(
@@ -83,16 +83,14 @@ def addData(request):
     return render(request,"streamData/addData.html",{
         "form":TicketsForm
     })
-def convertCoding(c):
-    if c == " ":
-        return "&nbsp"
-    elif c == '\n':
-        return "<br>"
-    else:
-        return c
+
 def read_file(f):
-    #lines = [str(chunk,'utf-8') for chunk in f.read()]
+    #read from form
     lines = [(chr(line)) for line in f.read()]
+    lines = "".join(lines)
+    #write file
+    with open('batchPipline.txt','w') as file:
+        file.write(lines)
     return lines
 
 #refactoring uploaded batch to stream
@@ -104,11 +102,15 @@ def convert(request):
         if form.is_valid():
             #print("valid")
             #file = {}
-            file = read_file(request.FILES['file'])
-            file = "".join(file)
+            batchFile = read_file(request.FILES['file'])
+            refactor = PipelineRefractor("batchPipline.txt","streamPipline.txt","template.txt")
+            refactor.refractor()
+            with open('streamPipline.txt','r') as streamFileSource:
+                streamFile = streamFileSource.readlines()
+            streamFile = "".join(streamFile)
             #print(len(file))
             return render(request,'streamData/convert.html',{
-                "file":file
+                "batchFile":batchFile,"streamFile":streamFile
                 })
             #return HttpResponseRedirect('streamData/convert.html')
     

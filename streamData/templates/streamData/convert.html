@@ -14,10 +14,15 @@ Converting
     {{ form }}
     <input type="submit">
    </form>
-   {% if file %}
+   {% if batchFile %}
    <div>
          <h3>Batch pipeline</h3>
-         <pre>{{ file }}</pre>
+         <pre>{{ batchFile }}</pre>
+   </div>
+
+   <div>
+      <h3> Stream pipeline</h3>
+      <pre>{{streamFile}}</pre>
    </div>
    {% endif %}
 
