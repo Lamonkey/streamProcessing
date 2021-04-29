@@ -17,7 +17,6 @@ class PipelineRefractor:
         lines = open(self.template_fn, 'r').readlines()
 
         for i, line in enumerate(lines):
-            # aggregate
             if self.num_reuse == 1:
                 processed_lines.append(" " * 4 +line)
 
@@ -31,7 +30,6 @@ class PipelineRefractor:
                     )
                     processed_lines.append(" " * 4 +update_line)
 
-            # init update_value
             elif "0" in line and ("update_value" in line or "running_value" in line) :
                 init_value = "["
                 for j in range(self.num_reuse):
@@ -53,9 +51,9 @@ class PipelineRefractor:
         for line in lines:
             if "batch_pipeline" in line:
                 line = line.replace("batch", "stream")
-            # identify the format of data pipeline
+
             if "reduceByKey" in line and "lambda" in line:
-                out = line.split("(")[-1].strip("\n").strip(")")                # check if the valid reusable pattern is detected
+                out = line.split("(")[-1].strip("\n").strip(")")
                 if "lambda" in out:
                     self.is_valid = False
 
@@ -77,7 +75,7 @@ class PipelineRefractor:
             return
 
         for i, line in enumerate(self.buffer):
-            # alway insert the updateStateByKey after the reduceByKey
+
             if "reduceByKey" in line and "lambda" in line:
                 res_file.write(line)
                 res_file.write("    " * 2 + ".updateStateByKey(updateFunc)\n")
@@ -92,7 +90,6 @@ class PipelineRefractor:
         lines = f.readlines()
         f.close()
 
-        # check input format
         for line in lines:
             if ".map" in line:
                 self.is_valid = True
