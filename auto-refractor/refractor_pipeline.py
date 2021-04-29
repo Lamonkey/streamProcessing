@@ -16,6 +16,7 @@ class PipelineRefractor:
         self.buffer = []
         self.num_reuse = 0
         self.is_valid = False
+        self.ops = []
 
     def __format_updateStateByKey(self,):
         """
@@ -34,9 +35,11 @@ class PipelineRefractor:
                     update_line = (
                         line.replace("update_value", "update_value[{}]".format(j))
                         .replace("[x", "[x[{}]".format(j))
+                        .replace("+", self.ops[j])
                         .replace("running_value", "running_value[{}]".format(j))
                     )
                     processed_lines.append(" " * 4 +update_line)
+
             # init update_value
             elif "0" in line and ("update_value" in line or "running_value" in line) :
                 init_value = "["
@@ -49,8 +52,8 @@ class PipelineRefractor:
                 processed_lines.append(" " * 4 +line)
             else:
                 processed_lines.append(" " * 4 + line)
-
         return processed_lines
+
     def __insert_updateStateByKey(self):
         '''Inserting the template for updateStatesByKey'''
         update_state_func = self.__format_updateStateByKey()
@@ -63,13 +66,18 @@ class PipelineRefractor:
                 line = line.replace("batch", "stream")
             # identify the format of data pipeline
             if "reduceByKey" in line and "lambda" in line:
-                out = line.split("(")[-1].strip("\n").strip(")")
-                self.num_reuse = len(out.split(","))
-                # check if the valid reusable pattern is detected
+                out = line.split("(")[-1].strip("\n").strip(")")                # check if the valid reusable pattern is detected
                 if "lambda" in out:
                     print("--- The format of Input file is INVALID")
                     print("--- lambda function in reduceByKey must satisfied the format of 'lambda x, y: (x + y)' ")
                     self.is_valid = False
+
+                self.num_reuse = len(out.split(","))
+                for op in out.split(","):
+                    op = op.lstrip(" ")
+                    l = len(op)
+                    self.ops.append(op[l // 2])
+
 
             elif "sortBy" in line:
                 line = line.replace(".", ".transform(lambda rdd: rdd.").replace("\n", ")\n")
@@ -121,8 +129,8 @@ class PipelineRefractor:
 
 def main():
     parser = argparse.ArgumentParser(description='auto refractor batch pipeline to stream pipeline')
-    parser.add_argument('--f_in', type=str, default="./sample/invalid/batch_pipeline.txt", help='input filename')
-    parser.add_argument('--f_gt', type=str, default="./sample/invalid/gt_stream_pipeline.txt", help='output filename')
+    parser.add_argument('--f_in', type=str, default="./sample/lambda/batch_pipeline.txt", help='input filename')
+    parser.add_argument('--f_gt', type=str, default="./sample/lambda/gt_stream_pipeline.txt", help='output filename')
     parser.add_argument('--f_out', type=str, default="./gen_stream_pipeline.py", help='output filename')
     args = parser.parse_args()
 
