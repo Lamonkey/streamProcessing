@@ -15,6 +15,7 @@ class PipelineRefractor:
         self.output_fn = output_fn
         self.buffer = []
         self.num_reuse = 0
+        self.is_valid = True
 
     def __format_updateStateByKey(self,):
         """
@@ -62,8 +63,14 @@ class PipelineRefractor:
                 line = line.replace("batch", "stream")
             # identify the format of data pipeline
             if "reduceByKey" in line and "lambda" in line:
-                out = line.split("(")[-1].strip(")")
+                out = line.split("(")[-1].strip("\n").strip(")")
                 self.num_reuse = len(out.split(","))
+                # check if the valid reusable pattern is detected
+                if "lambda" in out:
+                    print("--- The format of Input file is INVALID")
+                    print("--- lambda function in reduceByKey must satisfied the format of 'lambda x, y: (x + y)' ")
+                    self.is_valid = False
+
             elif "sortBy" in line:
                 line = line.replace(".", ".transform(lambda rdd: rdd.").replace("\n", ")\n")
                 print(line)
@@ -93,8 +100,14 @@ class PipelineRefractor:
         self.__insert_updateStateByKey()
         self.__buffer_to_output()
 
+        # Return if the transformation is valid or not.
+        if not self.is_valid:
+            print("The input file do not satisfy our auto-refractor criteria, please modified or input a new one.")
 
-if __name__ == "__main__":
+        return self.is_valid
+
+
+def main():
     parser = argparse.ArgumentParser(description='auto refractor batch pipeline to stream pipeline')
     parser.add_argument('--f_in', type=str, default="./sample/uber_pickup/batch_pipeline.txt", help='input filename')
     parser.add_argument('--f_gt', type=str, default="./sample/uber_pickup/gt_stream_pipeline.txt", help='output filename')
@@ -109,7 +122,10 @@ if __name__ == "__main__":
         output_fn=args.f_out,
         template_fn="./sample/template.txt",
     )
-    pipeline.refractor()
+    valid = pipeline.refractor()
+
+    if not valid:
+        return
 
     gt_lines = open(args.f_gt).readlines()
     res_lines = open("./gen_stream_pipeline.py").readlines()
@@ -123,3 +139,8 @@ if __name__ == "__main__":
             print("{} \t\t ------ pass".format(gt))
         else:
             bp.set_trace()
+
+
+
+if __name__ == "__main__":
+    main()
