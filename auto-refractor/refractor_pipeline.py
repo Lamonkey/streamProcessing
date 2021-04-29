@@ -4,12 +4,6 @@ import os
 
 class PipelineRefractor:
     def __init__(self, input_fn, output_fn, template_fn):
-        """[summary]
-
-        Args:
-            input_fn ([str]): [filename of a .py file for batch processing pipeline]
-            output_fn ([str]): [filename of a .py file for stream processing pipeline ]
-        """
         self.input_fn = input_fn
         self.template_fn = template_fn
         self.output_fn = output_fn
@@ -19,9 +13,6 @@ class PipelineRefractor:
         self.ops = []
 
     def __format_updateStateByKey(self,):
-        """
-        Based on the template.txt and the self.num_reuse to generate a updateStateByKey function
-        """
         processed_lines = []
         lines = open(self.template_fn, 'r').readlines()
 
@@ -55,12 +46,10 @@ class PipelineRefractor:
         return processed_lines
 
     def __insert_updateStateByKey(self):
-        '''Inserting the template for updateStatesByKey'''
         update_state_func = self.__format_updateStateByKey()
         self.buffer = self.buffer[:1] + update_state_func + self.buffer[1:]
 
     def __input_to_buffer(self, lines):
-        ''' Push the input file into buffer and do simple modification via replacement'''
         for line in lines:
             if "batch_pipeline" in line:
                 line = line.replace("batch", "stream")
@@ -68,8 +57,6 @@ class PipelineRefractor:
             if "reduceByKey" in line and "lambda" in line:
                 out = line.split("(")[-1].strip("\n").strip(")")                # check if the valid reusable pattern is detected
                 if "lambda" in out:
-                    print("--- The format of Input file is INVALID")
-                    print("--- lambda function in reduceByKey must satisfied the format of 'lambda x, y: (x + y)' ")
                     self.is_valid = False
 
                 self.num_reuse = len(out.split(","))
@@ -78,16 +65,14 @@ class PipelineRefractor:
                     l = len(op)
                     self.ops.append(op[l // 2])
 
-
             elif "sortBy" in line:
                 line = line.replace(".", ".transform(lambda rdd: rdd.").replace("\n", ")\n")
-                print(line)
+
             elif "take" in line:
                 line = line.replace("take", "pprint")
             self.buffer.append(line)
 
     def __buffer_to_output(self, res_file):
-        '''Iteratively write the elements in buffer to output file'''
         if not self.is_valid:
             return
 
@@ -113,17 +98,11 @@ class PipelineRefractor:
                 self.is_valid = True
 
         if not self.is_valid:
-            print("-- Input file is not a batch processing pipeline")
             return
 
         self.__input_to_buffer(lines)
         self.__insert_updateStateByKey()
         self.__buffer_to_output(res_file)
-
-        # Return if the transformation is valid or not.
-        if not self.is_valid:
-            print("The input file do not satisfy our auto-refractor criteria, please modified or input a new one.")
-
         return self.is_valid
 
 
