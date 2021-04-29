@@ -1,0 +1,24 @@
+{% extends "streamData/layout.html" %}
+
+{% block title%}
+<title>
+Converting
+</title>
+{% endblock%}
+
+
+{% block body %}
+   <h1> input bach processing pipeline</h1>
+   <form action="{% url 'streamData:convert' %}" method = "POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit">
+   </form>
+   {% if file %}
+   <div>
+         <h3>Batch pipeline</h3>
+         <pre>{{ file }}</pre>
+   </div>
+   {% endif %}
+
+{% endblock %}

@@ -1,4 +1,5 @@
 from typing import Reversible
+from django.core import exceptions
 from django.core.exceptions import ValidationError
 from django.forms.widgets import Textarea
 from django.http.response import HttpResponseRedirect
@@ -8,6 +9,15 @@ from django import forms
 from django.urls import reverse
 from django.forms import ModelForm
 from streamData.models import Flight_Ticket
+
+#form to handle upload txt or py file
+class UploadFileForm(forms.Form):
+    #title = forms.CharField(max_length=50)
+    file = forms.FileField(
+        label='Select a file',
+        help_text='max. 42 megabytes'
+    )
+
 # Create your views here.
 class MultiTicketField(forms.Field):
     def to_python(self,value):
@@ -73,6 +83,37 @@ def addData(request):
     return render(request,"streamData/addData.html",{
         "form":TicketsForm
     })
-   
+def convertCoding(c):
+    if c == " ":
+        return "&nbsp"
+    elif c == '\n':
+        return "<br>"
+    else:
+        return c
+def read_file(f):
+    #lines = [str(chunk,'utf-8') for chunk in f.read()]
+    lines = [(chr(line)) for line in f.read()]
+    return lines
+
+#refactoring uploaded batch to stream
+def convert(request):
+    if request.method == 'POST':
+        #form = UploadFileForm(request.POST)
+        form = UploadFileForm(request.POST,request.FILES)
+        #return HttpResponse(form, content_type="text/plain")
+        if form.is_valid():
+            #print("valid")
+            #file = {}
+            file = read_file(request.FILES['file'])
+            file = "".join(file)
+            #print(len(file))
+            return render(request,'streamData/convert.html',{
+                "file":file
+                })
+            #return HttpResponseRedirect('streamData/convert.html')
+    
+    else:
+        form = UploadFileForm()
+    return render(request, 'streamData/convert.html', {'form': form})
     
     
