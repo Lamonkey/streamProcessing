@@ -81,6 +81,10 @@ class PipelineRefractor:
     def __buffer_to_output(self,):
         '''Iteratively write the elements in buffer to output file'''
         res_file = open(self.output_fn, "w")
+
+        if not self.is_valid:
+            return
+
         for i, line in enumerate(self.buffer):
             # alway insert the updateStateByKey after the reduceByKey
             if "reduceByKey" in line and "lambda" in line:
