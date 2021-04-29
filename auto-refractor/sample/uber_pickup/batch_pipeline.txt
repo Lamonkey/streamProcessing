@@ -1,0 +1,20 @@
+def batch_pipeline(source):
+    def udf(row):
+        row = row.split(",")
+        hour = int(row[1].split(" ")[0].split(":")[0])
+        if row[1].split(" ")[1] == "PM":
+            if hour != 12:
+                hour += 12
+        if hour == 12 and row[1].split(" ")[1] == "AM":
+            hour = 0
+        loc = row[2][2:]
+        return (hour, loc), 1
+
+    target = (
+        source.map(udf)
+        .reduceByKey(lambda x, y: (x + y))
+        .map(lambda x: (x[0][0], (x[1], x[0][1])))
+        .reduceByKey(max)
+        .sortBy(lambda x: int(x[0]), ascending=True)
+    )
+    return target

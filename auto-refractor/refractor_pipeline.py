@@ -14,19 +14,23 @@ class PipelineRefractor:
         self.template_fn = template_fn
         self.output_fn = output_fn
         self.buffer = []
-        self.num_out = 0
+        self.num_reuse = 0
+        self.is_valid = False
 
-    def format_updateStateByKey(self,):
+    def __format_updateStateByKey(self,):
+        """
+        Based on the template.txt and the self.num_reuse to generate a updateStateByKey function
+        """
         processed_lines = []
         lines = open(self.template_fn, 'r').readlines()
 
         for i, line in enumerate(lines):
             # aggregate
-            if self.num_out == 1:
+            if self.num_reuse == 1:
                 processed_lines.append(" " * 4 +line)
 
             elif "update_value" in line and "sum" in line and "running_value" in line:
-                for j in range(self.num_out):
+                for j in range(self.num_reuse):
                     update_line = (
                         line.replace("update_value", "update_value[{}]".format(j))
                         .replace("[x", "[x[{}]".format(j))
@@ -36,8 +40,8 @@ class PipelineRefractor:
             # init update_value
             elif "0" in line and ("update_value" in line or "running_value" in line) :
                 init_value = "["
-                for j in range(self.num_out):
-                    if j != self.num_out - 1:
+                for j in range(self.num_reuse):
+                    if j != self.num_reuse - 1:
                         init_value += "0, "
                     else:
                         init_value += "0]"
@@ -47,19 +51,26 @@ class PipelineRefractor:
                 processed_lines.append(" " * 4 + line)
 
         return processed_lines
-    def insert_updateStateByKey(self):
+    def __insert_updateStateByKey(self):
         '''Inserting the template for updateStatesByKey'''
-        update_state_func = self.format_updateStateByKey()
+        update_state_func = self.__format_updateStateByKey()
         self.buffer = self.buffer[:1] + update_state_func + self.buffer[1:]
 
-    def input_to_buffer(self, lines):
+    def __input_to_buffer(self, lines):
+        ''' Push the input file into buffer and do simple modification via replacement'''
         for line in lines:
             if "batch_pipeline" in line:
                 line = line.replace("batch", "stream")
             # identify the format of data pipeline
-            if "reduceByKey" in line:
-                out = line.split("(")[-1].strip(")")
-                self.num_out = len(out.split(","))
+            if "reduceByKey" in line and "lambda" in line:
+                out = line.split("(")[-1].strip("\n").strip(")")
+                self.num_reuse = len(out.split(","))
+                # check if the valid reusable pattern is detected
+                if "lambda" in out:
+                    print("--- The format of Input file is INVALID")
+                    print("--- lambda function in reduceByKey must satisfied the format of 'lambda x, y: (x + y)' ")
+                    self.is_valid = False
+
             elif "sortBy" in line:
                 line = line.replace(".", ".transform(lambda rdd: rdd.").replace("\n", ")\n")
                 print(line)
@@ -67,10 +78,16 @@ class PipelineRefractor:
                 line = line.replace("take", "pprint")
             self.buffer.append(line)
 
-    def buffer_to_output(self,):
+    def __buffer_to_output(self,):
+        '''Iteratively write the elements in buffer to output file'''
         res_file = open(self.output_fn, "w")
+
+        if not self.is_valid:
+            return
+
         for i, line in enumerate(self.buffer):
-            if "reduceByKey" in line:
+            # alway insert the updateStateByKey after the reduceByKey
+            if "reduceByKey" in line and "lambda" in line:
                 res_file.write(line)
                 res_file.write("    " * 2 + ".updateStateByKey(updateFunc)\n")
 
@@ -83,15 +100,30 @@ class PipelineRefractor:
         lines = f.readlines()
         f.close()
 
-        self.input_to_buffer(lines)
-        self.insert_updateStateByKey()
-        self.buffer_to_output()
+        # check input format
+        for line in lines:
+            if ".map" in line:
+                self.is_valid = True
+
+        if not self.is_valid:
+            print("-- Input file is not a batch processing pipeline")
+            return
+
+        self.__input_to_buffer(lines)
+        self.__insert_updateStateByKey()
+        self.__buffer_to_output()
+
+        # Return if the transformation is valid or not.
+        if not self.is_valid:
+            print("The input file do not satisfy our auto-refractor criteria, please modified or input a new one.")
+
+        return self.is_valid
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description='auto refractor batch pipeline to stream pipeline')
-    parser.add_argument('--f_in', type=str, default="./sample/wc/batch_pipeline.txt", help='input filename')
-    parser.add_argument('--f_gt', type=str, default="./sample/wc/gt_stream_pipeline.txt", help='output filename')
+    parser.add_argument('--f_in', type=str, default="./sample/invalid/batch_pipeline.txt", help='input filename')
+    parser.add_argument('--f_gt', type=str, default="./sample/invalid/gt_stream_pipeline.txt", help='output filename')
     parser.add_argument('--f_out', type=str, default="./gen_stream_pipeline.py", help='output filename')
     args = parser.parse_args()
 
@@ -103,7 +135,10 @@ if __name__ == "__main__":
         output_fn=args.f_out,
         template_fn="./sample/template.txt",
     )
-    pipeline.refractor()
+    valid = pipeline.refractor()
+
+    if not valid:
+        return
 
     gt_lines = open(args.f_gt).readlines()
     res_lines = open("./gen_stream_pipeline.py").readlines()
@@ -117,3 +152,8 @@ if __name__ == "__main__":
             print("{} \t\t ------ pass".format(gt))
         else:
             bp.set_trace()
+
+
+
+if __name__ == "__main__":
+    main()
