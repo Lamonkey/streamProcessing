@@ -15,7 +15,7 @@ class PipelineRefractor:
         self.output_fn = output_fn
         self.buffer = []
         self.num_reuse = 0
-        self.is_valid = True
+        self.is_valid = False
 
     def __format_updateStateByKey(self,):
         """
@@ -78,10 +78,8 @@ class PipelineRefractor:
                 line = line.replace("take", "pprint")
             self.buffer.append(line)
 
-    def __buffer_to_output(self,):
+    def __buffer_to_output(self, res_file):
         '''Iteratively write the elements in buffer to output file'''
-        res_file = open(self.output_fn, "w")
-
         if not self.is_valid:
             return
 
@@ -97,12 +95,22 @@ class PipelineRefractor:
 
     def refractor(self):
         f = open(self.input_fn, "r")
+        res_file = open(self.output_fn, "w")
         lines = f.readlines()
         f.close()
 
+        # check input format
+        for line in lines:
+            if ".map" in line:
+                self.is_valid = True
+
+        if not self.is_valid:
+            print("-- Input file is not a batch processing pipeline")
+            return
+
         self.__input_to_buffer(lines)
         self.__insert_updateStateByKey()
-        self.__buffer_to_output()
+        self.__buffer_to_output(res_file)
 
         # Return if the transformation is valid or not.
         if not self.is_valid:
@@ -113,8 +121,8 @@ class PipelineRefractor:
 
 def main():
     parser = argparse.ArgumentParser(description='auto refractor batch pipeline to stream pipeline')
-    parser.add_argument('--f_in', type=str, default="./sample/uber_pickup/batch_pipeline.txt", help='input filename')
-    parser.add_argument('--f_gt', type=str, default="./sample/uber_pickup/gt_stream_pipeline.txt", help='output filename')
+    parser.add_argument('--f_in', type=str, default="./sample/invalid/batch_pipeline.txt", help='input filename')
+    parser.add_argument('--f_gt', type=str, default="./sample/invalid/gt_stream_pipeline.txt", help='output filename')
     parser.add_argument('--f_out', type=str, default="./gen_stream_pipeline.py", help='output filename')
     args = parser.parse_args()
 
