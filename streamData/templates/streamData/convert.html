@@ -3,17 +3,27 @@
     Converting Tool
 </title>
 {% endblock%} {% block body %}
+<script>
+    function copyToClipboard(element) {
+        var $temp = $("<textarea>");
+        var brRegex = /<br\s*[\/]?>/gi;
+        $("body").append($temp);
+        $temp.val($(element).html().replace(brRegex, "\r\n")).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+</script>
 <div class='row'>
 
     {% if batchFile %}
-    <div class='col'>
+    <div class='col-12 col-md-6'>
         <h3>Batch Pipeline</h3>
         <pre>{{ batchFile }}</pre>
     </div>
     {% endif %} {% if streamFile%}
-    <div class='col'>
+    <div class='col-12 col-md-6'>
         <h3> Stream Pipeline</h3>
-        <pre>{{streamFile}}</pre>
+        <pre id='p1'>{{streamFile}}</pre>
     </div>
     {% endif %}
 
@@ -47,9 +57,21 @@
                 </div>
                 {% else %}
                 <div class='row justify-content-end'>
-                    <div class='col-6 text-right'>
-                        <a role="button" class="btn btn-info lg" href="{% url 'streamData:convert'%}"> Convert a another batch
-                     pipline </a>
+                    <div class='col-6'></div>
+                    <div class='col-6'>
+                        <div class='row'>
+                            <div class='col-12 text-right'>
+                                <a role="button" class="btn btn-info lg" href="{% url 'streamData:convert'%}"> Convert a another batch
+                         pipline </a>
+                            </div>
+
+                        </div>
+                        <div class='row'>
+                            <div class='col-12 text-right'>
+                                <button class='btn btn-secondary lg' , onclick="copyToClipboard(' #p1 ')">Copy File</button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 {% endif %}
