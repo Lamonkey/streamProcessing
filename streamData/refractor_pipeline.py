@@ -5,7 +5,6 @@ import os
 class PipelineRefractor:
     def __init__(self, input_fn, output_fn, template_fn):
         """[summary]
-
         Args:
             input_fn ([str]): [filename of a .py file for batch processing pipeline]
             output_fn ([str]): [filename of a .py file for stream processing pipeline ]
