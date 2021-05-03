@@ -33,7 +33,7 @@ ssc.checkpoint("./checkpoints/")
 
 
 from pyspark.streaming.kafka import KafkaUtils
-directKafkaStream = KafkaUtils.createDirectStream(ssc, ["ticket_flights_stream"], {"metadata.broker.list": brokers, "auto.offset.reset": "smallest"})
+directKafkaStream = KafkaUtils.createDirectStream(ssc, ["ticket_flights_stream"], {"metadata.broker.list": brokers})
 #, "auto.offset.reset": "smallest"
 
 initialStateRDD = sc.parallelize([(u'Economy', (0, 1)),

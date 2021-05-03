@@ -1,4 +1,4 @@
-def stream_pipeline(source):
+def stream_pipeline(source, k):
     def updateFunc(new_values, running_value):
         update_value = 0
         if not running_value:
@@ -11,6 +11,6 @@ def stream_pipeline(source):
         .reduceByKey(lambda x, y: (x + y))
         .updateStateByKey(updateFunc)
         .transform(lambda rdd: rdd.sortBy(lambda x: x[1], ascending=False))
-        .pprint(3)
+        .pprint(k)
     )
     return target

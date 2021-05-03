@@ -1,0 +1,27 @@
+def stream_pipeline(source):
+    def updateFunc(new_values, running_value):
+        update_value = 0
+        if not running_value:
+            running_value = 0
+        update_value = sum([x for x in new_values]) + running_value
+        return update_value
+    def udf(row):
+        row = row.split(",")
+        hour = int(row[1].split(" ")[0].split(":")[0])
+        if row[1].split(" ")[1] == "PM":
+            if hour != 12:
+                hour += 12
+        if hour == 12 and row[1].split(" ")[1] == "AM":
+            hour = 0
+        loc = row[2][2:]
+        return (hour, loc), 1
+
+    target = (
+        source.map(udf)
+        .reduceByKey(lambda x, y: (x + y))
+        .updateStateByKey(updateFunc)
+        .map(lambda x: (x[0][0], (x[1], x[0][1])))
+        .reduceByKey(max)
+        .transform(lambda rdd: rdd.sortBy(lambda x: int(x[0]), ascending=True))
+    )
+    return target
