@@ -1,67 +1,63 @@
-{% extends "streamData/layout.html" %}
-
-{% block title%}
+{% extends "streamData/layout.html" %} {% block title%}
 <title>
-Converting Tool
+    Converting Tool
 </title>
-{% endblock%}
+{% endblock%} {% block body %}
+<div class='row'>
+
+    {% if batchFile %}
+    <div class='col'>
+        <h3>Batch Pipeline</h3>
+        <pre>{{ batchFile }}</pre>
+    </div>
+    {% endif %} {% if streamFile%}
+    <div class='col'>
+        <h3> Stream Pipeline</h3>
+        <pre>{{streamFile}}</pre>
+    </div>
+    {% endif %}
+
+    <div class='col-12'>
 
 
-{% block body %}
-    <div class = 'row'>
-  
-      {% if batchFile %}
-         <div class= 'col-6'>
-               <h3>Batch Pipeline</h3>
-               <pre>{{ batchFile }}</pre>
-         </div>
-      {% endif %}
+        {% if not batchFile%}
+        <div class='row justify-content-around'>
+            <div class='col-6'>
+                <div class='row'>
+                    <div class='col-12'>
+                        <h3> Upload a batch processing pipeline</h3>
+                    </div>
+                </div>
 
-      {% if streamFile%}
-         <div class = 'col-6'>
-            <h3> Stream Pipeline</h3>
-            <pre>{{streamFile}}</pre>
-         </div>
-      {% endif %}
+                <div class='row'>
+                    <div class='col-6'>
+                        <form action="{% url 'streamData:convert' %}" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                {% csrf_token %} {{ form }}
+                            </div>
 
-    <div class = 'col-12'>
-   
-         
-            {% if not batchFile%}
-            <div class='row justify-content-around'>
-            <div class = 'col-6' >
-               <div class = 'row'>
-               <div class = 'col-12'>
-               <h3> Upload a batch processing pipeline</h3>
-               </div>
-               </div>
+                            <button type="submit" ,class="btn btn-primary lg"> Convert </button>
 
-               <div class = 'row'>
-               <div class = 'col-6'>
-               <form action="{% url 'streamData:convert' %}" method = "POST" enctype="multipart/form-data">
-                  <div class="form-group">
-                     {% csrf_token %}
-                     {{ form }}
-                  </div>
 
-                     <button type="submit",class="btn btn-primary lg"> Convert </button>
-                     
-                     
-   
-      
-                    
-               </form>
+
+
+
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div class='row justify-content-end'>
+                    <div class='col-6 text-right'>
+                        <a role="button" class="btn btn-info lg" href="{% url 'streamData:convert'%}"> Convert a another batch
+                     pipline </a>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
             </div>
-            </div>
-            {% else %}
-            <div class='row justify-content-end'>
-              <div class = 'col-6 text-right' >
-               <a role="button" class="btn btn-info lg" href="{% url 'streamData:convert'%}"> Convert a another batch pipline </a>
-              </div>
-              </div>
-            {% endif %}
-         
-     
-  
-   </div>
-{% endblock %}
+        </div>
+        {% endblock %}
+    </div>
+</div>

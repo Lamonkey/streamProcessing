@@ -1,9 +1,7 @@
-def batch_pipeline(source):
-    target = (
-        source.flatMap(lambda line: line.split(" "))
-        .map(lambda word: (word, 1))
-        .reduceByKey(lambda x, y: (x + y))
-        .sortBy(lambda x: x[1], ascending=False)
-        .take(3)
-    )
-    return target
+import spacy
+nlp = spacy.load('en_core_web_sm')
+text = "Kerry Taste and Nutrition Ingredients and Expertise | Kerry"
+about_doc = nlp(text)
+sentences = list(about_doc.sents)
+for sentence in sentences:
+    print (f"{sentence}\n")

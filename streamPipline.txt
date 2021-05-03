@@ -1,16 +1,12 @@
-def stream_pipeline(source):
+import spacy
     def updateFunc(new_values, running_value):
-        update_value = 0
+        update_value = [
         if not running_value:
-            running_value = 0
-        update_value = sum([x for x in new_values]) + running_value
+            running_value = [
         return update_value
-    target = (
-        source.flatMap(lambda line: line.split(" "))
-        .map(lambda word: (word, 1))
-        .reduceByKey(lambda x, y: (x + y))
-        .updateStateByKey(updateFunc)
-        .transform(lambda rdd: rdd.sortBy(lambda x: x[1], ascending=False))
-        .pprint(3)
-    )
-    return target
+nlp = spacy.load('en_core_web_sm')
+text = "Kerry Taste and Nutrition Ingredients and Expertise | Kerry"
+about_doc = nlp(text)
+sentences = list(about_doc.sents)
+for sentence in sentences:
+    print (f"{sentence}\n")
