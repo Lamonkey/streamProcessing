@@ -1,3 +1,14 @@
+# Online Convertor
+For this project, we designed an online convertor for translating batch processing code to stream processing code. The tool is available at:
+https://streamprocessing.herokuapp.com/simulateStream/
+
+source code for frontend is at frontend branch.
+
+Please refer to "Auto-refactor" folder for the source code for auto-refactor
+
+kafka is used to test generated stream processing code. To set up Kafka, see the following steps.
+
+
 # Spark Streaming + Kafka Integration
 Kafka producer reads in .csv file and pushes data onto a topic. Spark streaming then works as a consumer to receive the streaming data and processes them.
 
